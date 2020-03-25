@@ -16,5 +16,19 @@ public class ItemPickerTest {
 		Assertions.assertEquals(result.get(0), items.get(1));
 		Assertions.assertEquals(result.get(1), items.get(6));
 	}
+	
+	@Test
+	public void testPickItems_LessWeightMoreCost() {
+		List<Item> items = Arrays.asList(new Item(1,53.38,45),new Item(2,88.62,98),new Item(3,78.48,3),new Item(4,72.30,76),new Item(5,30.18,9),new Item(6,46.34,48));
+		List<Item> result = ItemPicker.pickItems(items, 81);
+		Assertions.assertEquals(result.get(0), items.get(3));
+	}
+
+	@Test
+	public void testPickItems_NoItemForSelection() {
+		List<Item> items = Arrays.asList(new Item(1,15.3,34));
+		List<Item> result = ItemPicker.pickItems(items, 8);
+		Assertions.assertTrue(result.isEmpty());
+	}
 
 }
