@@ -1,17 +1,18 @@
 package com.mobiquity.packer;
 
-import static com.mobiquity.util.Constants.EMPTY_STRING;
 import static com.mobiquity.util.Constants.COMMA;
+import static com.mobiquity.util.Constants.EMPTY_STRING;
 import static com.mobiquity.util.Constants.HYPHEN;
 import static com.mobiquity.util.Constants.NEW_LINE;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.mobiquity.model.Package;
 
 import com.mobiquity.exception.APIException;
 import com.mobiquity.model.Item;
+import com.mobiquity.model.Package;
+import com.mobiquity.util.PackageValidator;
 
 public class Packer {
 
@@ -21,6 +22,9 @@ public class Packer {
 			packs = FileReader.readFile(path);
 			if (packs.isEmpty())
 				return EMPTY_STRING;
+			PackageValidator validator = new PackageValidator();
+			if(!validator.isValid(packs))
+				throw new APIException("Data validation failed");
 			for (Package pack : packs) {
 				List<Item> items = ItemPicker.pickItems(pack.getItems(), pack.getMaxWeight());
 				pack.setItems(items);

@@ -1,8 +1,14 @@
 package com.mobiquity.model;
 
+import javax.validation.constraints.Max;
+
 public class Item {
 	private final int index;
+	
+	@Max(100)
 	private final double weight;
+	
+	@Max(100)
 	private final double cost;
 
 	public Item(int index, double weight, double cost) {
