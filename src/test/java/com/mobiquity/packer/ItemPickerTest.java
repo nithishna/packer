@@ -31,4 +31,14 @@ public class ItemPickerTest {
 		Assertions.assertTrue(result.isEmpty());
 	}
 
+	@Test
+	public void testPickItems_TwoItemsWithSameCost() {
+		List<Item> items = Arrays.asList(new Item(1,90.72,13),new Item(2,33.80,40),new Item(3,43.15,10),new Item(4,37.97,16),new Item(5,46.81,36),new Item(6,48.77,79),new Item(7,81.80,45),new Item(8,19.36,79),new Item(9,6.76,64));
+		List<Item> expectedResult = Arrays.asList(new Item(8,19.36,79),new Item(9,6.76,64));
+		List<Item> result = ItemPicker.pickItems(items, 56);
+		int counter = 0;
+		for(Item item : result) {
+			Assertions.assertEquals(item, expectedResult.get(counter++));
+		}
+	}
 }

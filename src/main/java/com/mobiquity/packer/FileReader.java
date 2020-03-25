@@ -12,6 +12,12 @@ import com.mobiquity.model.Package;
 
 public class FileReader {
 
+	/**
+	 * Reads the input file and converts it to a list of Items
+	 * 
+	 * Also validates the input file and encoding
+	 * 
+	 * */
 	public static List<Package> readFile(String path) throws IOException {
 		BufferedReader reader = null;
 		List<Package> packages = new ArrayList<>();
@@ -19,12 +25,15 @@ public class FileReader {
 			reader = new BufferedReader(new java.io.FileReader(path, StandardCharsets.UTF_8));
 			String line = reader.readLine();
 			while (line != null) {
+				//File format validation using regular expression
 				if (!line.matches("\\d* :( \\(\\d*,\\d*(\\.\\d*)?,\\€\\d*\\))*")) {
 					throw new InvalidObjectException("File format incorrect");
 				}
 				String[] values = line.split(" : ");
+				//Extract the weight limit for the package
 				double weight = Double.parseDouble(values[0]);
 				Package pack = new Package(weight);
+				//Extract the list of items given as input to select from
 				String[] elements = values[1].split(" ");
 				List<Item> items = new ArrayList<>();
 				for (String element : elements) {
@@ -34,6 +43,7 @@ public class FileReader {
 							Double.parseDouble(itemDetails[2].substring(1)));
 					items.add(item);
 				}
+				//Add the extracted items to the package
 				pack.setItems(items);
 				packages.add(pack);
 				line = reader.readLine();
