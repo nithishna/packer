@@ -1,5 +1,9 @@
 package com.mobiquity.packer;
 
+import static com.mobiquity.util.Constants.REGEX;
+import static com.mobiquity.util.Constants.COLON;
+import static com.mobiquity.util.Constants.FORMAT_ERROR_MESSAGE;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -26,10 +30,10 @@ public class FileReader {
 			String line = reader.readLine();
 			while (line != null) {
 				//File format validation using regular expression
-				if (!line.matches("\\d* :( \\(\\d*,\\d*(\\.\\d*)?,\\€\\d*\\))*")) {
-					throw new InvalidObjectException("File format incorrect");
+				if (!line.matches(REGEX)) {
+					throw new InvalidObjectException(FORMAT_ERROR_MESSAGE);
 				}
-				String[] values = line.split(" : ");
+				String[] values = line.split(COLON);
 				//Extract the weight limit for the package
 				double weight = Double.parseDouble(values[0]);
 				Package pack = new Package(weight);
